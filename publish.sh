@@ -9,3 +9,6 @@ docker push cloudbees/jenkins-enterprise:$JENKINS_VERSION
 
 docker build -f Dockerfile.$JENKINS_VERSION -t cloudbees/jenkins-enterprise:latest .
 docker push cloudbees/jenkins-enterprise:latest
+
+git tag cje-$JENKINS_VERSION
+git push --tags
