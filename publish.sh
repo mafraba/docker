@@ -9,3 +9,6 @@ docker push cloudbees/jenkins-operations-center:$JENKINS_VERSION
 
 docker build -f Dockerfile.$JENKINS_VERSION -t cloudbees/jenkins-operations-center:latest .
 docker push cloudbees/jenkins-operations-center:latest
+
+git tag cjoc-$JENKINS_VERSION
+git push --tags
