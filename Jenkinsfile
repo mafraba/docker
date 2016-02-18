@@ -7,11 +7,11 @@ node('dockerhub') {
     sh "docker build --build-arg VERSION=${VERSION} --build-arg SHA=${SHA} -t ${repo}:${VERSION} ."
     // need --build-arg support
     //def img = docker.build("${repo}:${VERSION}")
+    def img = docker.image("${repo}:${VERSION}")
+    img.tag("${repo}:latest")
 
     stage 'Push'
-    sh "docker push ${repo}:latest"
-    sh "docker push ${repo}:${VERSION}"
-    //img.push();
-    //img.push('latest');
+    img.push();
+    img.push('latest');
   //}
 }
