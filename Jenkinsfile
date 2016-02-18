@@ -8,7 +8,7 @@ node('dockerhub') {
     // need --build-arg support
     //def img = docker.build("${repo}:${VERSION}")
     def img = docker.image("${repo}:${VERSION}")
-    img.tag("${repo}:latest")
+    img.tag("latest")
 
     stage 'Push'
     img.push();
