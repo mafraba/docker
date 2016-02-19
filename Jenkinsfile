@@ -1,9 +1,10 @@
 node('dockerhub') {
   def repo = "cloudbees/jenkins-operations-center"
+  def branch = "cjoc"
 
   //docker.withRegistry('', 'dockerhub') {
     stage 'Build'
-    checkout scm
+    git url: 'https://github.com/cloudbees/docker.git', branch: branch
     sh "docker build --build-arg VERSION=${VERSION} --build-arg SHA=${SHA} -t ${repo}:${VERSION} ."
     // need --build-arg support
     //def img = docker.build("${repo}:${VERSION}")
