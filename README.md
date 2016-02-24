@@ -4,7 +4,9 @@ This image is based on [Jenkins Official Docker image](https://registry.hub.dock
 
 # Building
 
-    docker build --build-arg VERSION=1.642.1.1 --build-arg SHA=d4ba483067011025c578bd88ca805e303d7ce18a .
+Get the war sha from Maven repo at com/cloudbees/jenkins/main/jenkins-enterprise-war/${VERSION}/jenkins-enterprise-war-${VERSION}.war.sha1
+
+    docker build --build-arg VERSION=1.625.16.1 --build-arg SHA=877a3fc0013856795178a7eae4f5357c48d4bf77 .
 
 # Updating
 
