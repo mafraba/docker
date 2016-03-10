@@ -4,7 +4,7 @@ node('dockerhub') {
 
   stage 'Build'
   git url: 'https://github.com/cloudbees/docker.git', branch: branch
-  sh "docker build --no-cache --build-arg VERSION=${VERSION} --build-arg SHA=${SHA} -t ${repo}:${VERSION} ."
+  sh "docker build --pull --no-cache --build-arg VERSION=${VERSION} --build-arg SHA=${SHA} -t ${repo}:${VERSION} ."
   // need --build-arg support
   //def img = docker.build("${repo}:${VERSION}")
   def img = docker.image("${repo}:${VERSION}")
