@@ -160,15 +160,13 @@ be reverted on next start.
 
 Also see [JENKINS-24986](https://issues.jenkins-ci.org/browse/JENKINS-24986)
 
-For your convenience, you also can use a plain text file to define plugins to be installed
-(using core-support plugin format).
+For your convenience, you also can use a plain text file to define plugins to be installed (using core-support plugin format)
+If the sha is present in the plugin list, the download will be validated against it.
 All plugins need to be listed as there is no transitive dependency resolution.
 
 ```
-pluginID:version
-credentials:1.18
-maven-plugin:2.7.1
-...
+pluginID:version[:sha]
+anotherPluginID:version[:sha]
 ```
 
 And in derived Dockerfile just invoke the utility plugin.sh script
