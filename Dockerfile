@@ -1,6 +1,6 @@
 FROM java:8-jdk
 
-RUN apt-get update && apt-get install -y wget git curl zip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git curl zip && rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
@@ -29,21 +29,21 @@ ENV TINI_SHA 066ad710107dc7ee05d3aa6e4974f01dc98f3888
 
 # Use tini as subreaper in Docker container to adopt zombie processes 
 RUN curl -fsSL https://github.com/krallin/tini/releases/download/v0.5.0/tini-static -o /bin/tini && chmod +x /bin/tini \
-  && echo "$TINI_SHA /bin/tini" | sha1sum -c -
+  && echo "$TINI_SHA  /bin/tini" | sha1sum -c -
 
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-1.642.3}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.3}
 ARG JENKINS_SHA
-ENV JENKINS_SHA ${JENKINS_SHA:-2203f94a9b8fbd8d767ba244726f63ef01175b95}
+ENV JENKINS_SHA ${JENKINS_SHA:-d3097c9c81c7d5074d71a5059d85cf8977c1568e}
 
 # could use ADD but this one does not check Last-Modified header 
 # see https://github.com/docker/docker/issues/8331
 RUN curl -fsSL http://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war -o /usr/share/jenkins/jenkins.war \
-  && echo "${JENKINS_SHA} /usr/share/jenkins/jenkins.war" | sha1sum -c -
+  && echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha1sum -c -
 
-ENV JENKINS_UC https://updates.jenkins-ci.org
+ENV JENKINS_UC https://updates.jenkins.io
 RUN chown -R ${user} "$JENKINS_HOME" /usr/share/jenkins/ref
 
 # for main web interface:
