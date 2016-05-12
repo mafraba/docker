@@ -36,7 +36,7 @@ COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groov
 ARG JENKINS_VERSION
 ENV JENKINS_VERSION ${JENKINS_VERSION:-2.3}
 ARG JENKINS_SHA
-ENV JENKINS_SHA ${JENKINS_SHA:-ac0b046f477620088fc8e9a40c510e484d975d63}
+ENV JENKINS_SHA ${JENKINS_SHA:-d3097c9c81c7d5074d71a5059d85cf8977c1568e}
 
 
 # could use ADD but this one does not check Last-Modified header 
