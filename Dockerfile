@@ -37,11 +37,12 @@ ARG JENKINS_VERSION
 ENV JENKINS_VERSION ${JENKINS_VERSION:-1.651.3}
 ARG JENKINS_SHA
 ENV JENKINS_SHA ${JENKINS_SHA:-564e49fbd180d077a22a8c7bb5b8d4d58d2a18ce}
-
+ARG WAR_URL
+ENV WAR_URL ${WAR_URL:-http://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war}
 
 # could use ADD but this one does not check Last-Modified header 
 # see https://github.com/docker/docker/issues/8331
-RUN curl -fsSL http://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war -o /usr/share/jenkins/jenkins.war \
+RUN curl -fsSL $WAR_URL -o /usr/share/jenkins/jenkins.war \
   && echo "${JENKINS_SHA}  /usr/share/jenkins/jenkins.war" | sha1sum -c -
 
 ENV JENKINS_UC https://updates.jenkins.io
