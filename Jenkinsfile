@@ -1,18 +1,55 @@
+/* Expected Parameters
+  JENKINS_VERSION: the Jenkins version to release
+  JENKINS_SHA: the sha1
+  dockerhubCredentials: credentials to use for dockerhub
+  INTERNAL: if true, artifacts will be retrieved from a maven repository and pushed to an internal docker registry instead of public
+  internalMavenRepository: URL to internal maven repository. Shouldn't end with /
+  internalMavenCredentials: credentials to use for private Maven credentials
+  internalDockerRegistry: URL to internal docker registry. Shouldn't end with /
+  internalDockerCredentials: credentials to use for private docker registry
+*/
 node('dockerhub') {
+  def internal = (INTERNAL == 'true')
+  def dockerRegistry, dockerCredentials, warUrl
+  if (internal) {
+    dockerRegistry = internalDockerRegistry
+    dockerCredentials = internalDockerCredentials
+    withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                      credentialsId: internalMavenCredentials,
+                      usernameVariable: 'NEXUS_USERNAME',
+                      passwordVariable: 'NEXUS_PASSWORD']]) {
+      warUrl = "-u ${env.NEXUS_USERNAME}:${env.NEXUS_PASSWORD} $internalMavenRepository/com/cloudbees/jenkins/main/jenkins-enterprise-war/${JENKINS_VERSION}/jenkins-enterprise-war-${JENKINS_VERSION}.war"
+    }
+  } else {
+    dockerRegistry = ''
+    dockerCredentials = dockerhubCredentials
+    warUrl = "http://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war"
+  }
   def repo = "cloudbees/jenkins-enterprise"
+  def dockerTag = "${repo}:${JENKINS_VERSION}"
   def branch = "cje"
 
   stage 'Build'
   git url: 'https://github.com/cloudbees/docker.git', branch: branch
-  sh "docker build --pull --no-cache --build-arg JENKINS_VERSION=${JENKINS_VERSION} --build-arg JENKINS_SHA=${JENKINS_SHA} -t ${repo}:${JENKINS_VERSION} ."
-  // need --build-arg support
-  //def img = docker.build("${repo}:${JENKINS_VERSION}")
-  def img = docker.image("${repo}:${JENKINS_VERSION}")
-  img.tag("latest")
+  sh """
+    set +x
+    docker build --pull \
+                 --no-cache \
+                 --build-arg "JENKINS_VERSION=${JENKINS_VERSION}" \
+                 --build-arg "JENKINS_SHA=${JENKINS_SHA}" \
+                 --build-arg "WAR_URL=${warUrl}" \
+                  -t $dockerTag .
+  """
+  def img = docker.image(dockerTag)
+  if (!internal) {
+    img.tag("latest")
+  }
 
   stage 'Push'
-  docker.withRegistry('', 'dockerhub') {
+  docker.withRegistry(dockerRegistry, dockerCredentials) {
     img.push();
-    img.push('latest');
+    if (!internal) {
+      img.push('latest');
+    }
   }
 }
