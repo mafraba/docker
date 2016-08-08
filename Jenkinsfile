@@ -37,7 +37,7 @@ node('dockerhub') {
                  --no-cache \
                  --build-arg "JENKINS_VERSION=${JENKINS_VERSION}" \
                  --build-arg "JENKINS_SHA=${JENKINS_SHA}" \
-                 --build-arg "WAR_URL=${warUrl}" \
+                 --build-arg "JENKINS_URL=${warUrl}" \
                   -t $dockerTag .
   """
   def img = docker.image(dockerTag)
