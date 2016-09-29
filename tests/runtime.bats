@@ -9,6 +9,8 @@ load test_helpers
 
 @test "build image" {
   cd $BATS_TEST_DIRNAME/..
+  docker build --build-arg "JENKINS_VERSION=$JENKINS_VERSION" --build-arg "JENKINS_SHA=$JENKINS_SHA" -t tmp-bats-jenkins .
+  cd $BATS_TEST_DIRNAME
   docker build -t $SUT_IMAGE .
 }
 
