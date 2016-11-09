@@ -3,7 +3,7 @@
 This is a fully functional [CloudBees Jenkins Operations Center](https://www.cloudbees.com/products/cloudbees-jenkins-platform).
 
 
-![CloudBees](https://www.cloudbees.com/sites/default/files/cloudbees-enterprise-notag-withbutler-logo-home.png)
+![CloudBees](https://www.cloudbees.com/sites/all/themes/custom/cb_2016rev2/images/cloudbees-logo.png)
 
 
 # Usage
