@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 
-RUN apt-get update && apt-get install -y git curl zip && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git curl && rm -rf /var/lib/apt/lists/*
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
@@ -36,13 +36,13 @@ COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groov
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.7.4}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.19.2}
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA=07a2e3e4ace728fdbcc823f46068d2f8cc3cb97b
+ARG JENKINS_SHA=32b8bd1a86d6d4a91889bd38fb665db4090db081
 
 # Can be used to customize where jenkins.war get downloaded from
-ARG JENKINS_URL=http://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war
+ARG JENKINS_URL=https://jenkins-updates.cloudbees.com/download/je/${JENKINS_VERSION}/jenkins.war
 
 # could use ADD but this one does not check Last-Modified header neither does it allow to control checksum 
 # see https://github.com/docker/docker/issues/8331
