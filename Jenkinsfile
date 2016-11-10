@@ -25,7 +25,7 @@ node('dockerhub') {
     dockerCredentials = dockerhubCredentials
     warUrl = "http://jenkins-updates.cloudbees.com/download/oc/$JENKINS_VERSION/jenkins.war"
   }
-  def repo = "cloudbees/jenkins-operations-center"
+  def repo = "cloudbees/jenkins-operations-center" + (${JENKINS_VERSION}.split("\\.").length > 4 ? "-fixed" : ""​)
   def dockerTag = "${repo}:${JENKINS_VERSION}"
   def branch = "cjoc"
 
