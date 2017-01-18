@@ -18,7 +18,8 @@ node('dockerhub') {
                       credentialsId: internalMavenCredentials,
                       usernameVariable: 'NEXUS_USERNAME',
                       passwordVariable: 'NEXUS_PASSWORD']]) {
-      warUrl = "-u ${env.NEXUS_USERNAME}:${env.NEXUS_PASSWORD} $internalMavenRepository/com/cloudbees/jenkins/main/jenkins-enterprise-war/${JENKINS_VERSION}/jenkins-enterprise-war-${JENKINS_VERSION}.war"
+      sh "curl -fsSL -u ${env.NEXUS_USERNAME}:${env.NEXUS_PASSWORD} $internalMavenRepository/com/cloudbees/jenkins/main/jenkins-enterprise-war/${JENKINS_VERSION}/jenkins-enterprise-war-${JENKINS_VERSION}.war -o jenkins.war"
+      warUrl = "/jenkins.war"
     }
   } else {
     dockerRegistry = ''
